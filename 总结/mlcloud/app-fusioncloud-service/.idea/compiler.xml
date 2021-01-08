@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="access-fusioncloud" />
+        <module name="fusioncloud-service" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel target="1.8">
+      <module name="access-fusioncloud" target="8" />
+      <module name="app-fusioncloud-service" target="8" />
+      <module name="app-fusioncloud-service (1)" target="8" />
+      <module name="app-fusioncloud-service (2)" target="8" />
+      <module name="fusioncloud-service" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

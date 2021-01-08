@@ -1,0 +1,318 @@
+{
+	"info": {
+		"_postman_id": "6fd1f76a-53ea-4fd8-b541-6a8033904b56",
+		"name": "TCE_DEMO",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "CVM实例",
+			"item": [
+				{
+					"name": "DescribeInstances",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "edad52a7-ecea-43a8-be3b-50d70cf8590f",
+								"exec": [
+									"var action = \"DescribeInstances\";",
+									"var region = \"ap-guangzhou\";",
+									"pm.request.headers.add(\"X-TC-Action:\"+action);",
+									"pm.request.headers.add(\"X-TC-Region:\"+region);",
+									"var params = {",
+									"//     \"InstanceIds\": [pm.environment.get(\"instance_id\")]",
+									"};",
+									"eval(pm.globals.get('TencentCloudApi')).build_request(params);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{{request_json_payload}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{host}}",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							]
+						},
+						"description": "用于查询一个或多个实例的详细信息。"
+					},
+					"response": []
+				},
+				{
+					"name": "createInstance",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "203a8cdb-ee47-41ab-8b2a-abd3a0f7ed9e",
+								"exec": [
+									"var action = \"DescribeInstances\";",
+									"var region = \"ap-guangzhou\";",
+									"pm.request.headers.add(\"X-TC-Action:\"+action);",
+									"pm.request.headers.add(\"X-TC-Region:\"+region);",
+									"var params = {",
+									"//     \"InstanceIds\": [pm.environment.get(\"instance_id\")]",
+									"};",
+									"eval(pm.globals.get('TencentCloudApi')).build_request(params);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{{request_json_payload}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{host}}",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							]
+						},
+						"description": "创建实例\r\n"
+					},
+					"response": []
+				}
+			],
+			"description": "用于查询一个或多个实例的详细信息",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "13de5c40-bb61-49e1-ae24-075a6c4da227",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "cd1965ac-c1fa-4b51-9ff8-1cc4951b460c",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "DescribeZones",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "5c2044d7-10e6-4be8-bbfb-a827f449427b",
+						"exec": [
+							"var action = \"DescribeZones\";",
+							"var region = \"ap-guangzhou\";",
+							"pm.request.headers.add(\"X-TC-Action:\"+action);",
+							"pm.request.headers.add(\"X-TC-Region:\"+region);",
+							"var params = {",
+							"//     \"InstanceIds\": [pm.environment.get(\"instance_id\")]",
+							"};",
+							"eval(pm.globals.get('TencentCloudApi')).build_request(params);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "region",
+						"value": "ap-chegndu",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "X-TC-Region",
+						"value": "ap-chegndu",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{{request_json_payload}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{host}}",
+					"protocol": "https",
+					"host": [
+						"{{host}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "e79b684e-99cc-4714-90e5-3028e733947e",
+				"type": "text/javascript",
+				"exec": [
+					"pm.globals.set(\"TencentCloudApi\", function TencentCloudApi()  {",
+					"    let tencentcloudapi = {};",
+					"    ",
+					"    function sha256_hex(msg) {",
+					"        var utf8_str = CryptoJS.enc.Utf8.parse(msg);",
+					"        var sha256_str = CryptoJS.SHA256(utf8_str);",
+					"        var sha256_hex_str = CryptoJS.enc.Hex.stringify(sha256_str);",
+					"        return sha256_hex_str;",
+					"    }",
+					"    ",
+					"    function sign_hmac256(key, msg) {",
+					"        var utf8_str = CryptoJS.enc.Utf8.parse(msg);",
+					"        var hash_str = CryptoJS.HmacSHA256(utf8_str, key);",
+					"        return hash_str;",
+					"    }",
+					"    ",
+					"    function sign_hmac256_hex(key, msg) {",
+					"        var utf8_str = CryptoJS.enc.Utf8.parse(msg);",
+					"        var hash_str = CryptoJS.HmacSHA256(utf8_str, key);",
+					"        var hex_str = CryptoJS.enc.Hex.stringify(hash_str);",
+					"        return hex_str;",
+					"        ",
+					"    }",
+					"    ",
+					"    function get_pm_env_or_global(key) {",
+					"        return (pm.environment.get(key) !== undefined)? pm.environment.get(key): pm.globals.get(key);",
+					"    }",
+					"    ",
+					"    tencentcloudapi.build_request = function build_request(params) {",
+					"        var service = pm.environment.get(\"service\");",
+					"        var host = service + get_pm_env_or_global(\"tencentcloud_endpoint\");",
+					"        // var region = pm.environment.get(\"region\");",
+					"        // var region = request.headers[\"X-TC-Region\"];",
+					"        var version = pm.environment.get(\"version\");",
+					"        // var action = request.headers[\"X-TC-Action\"];",
+					"        var algorithm = \"TC3-HMAC-SHA256\";",
+					"        var timestamp = Math.round(Date.now() / 1000);",
+					"        var d = new Date();",
+					"        var date = d.toISOString().split('T')[0];",
+					"        ",
+					"        // step 1：create canonical_request",
+					"        // var http_request_method = \"POST\";",
+					"        var http_request_method = request.method;",
+					"        var canonical_uri = \"/\";",
+					"        var canonical_querystring = \"\";",
+					"        //content_type = \"application/json; charset=utf-8\";",
+					"",
+					"        // get:x-www-form-urlencoded post:application/json delete:????todo",
+					"        // var content_type = \"application/json\";",
+					"        console.log(\"http_request_method\",http_request_method);",
+					"        if (request.method == \"GET\") {",
+					"            var content_type = \"application/x-www-form-urlencoded\";",
+					"        }else if(request.method == \"POST\"){",
+					"            var content_type = \"application/json\";",
+					"        }",
+					"        var request_json_payload = JSON.stringify(params);",
+					"        var canonical_headers = \"content-type:\" + content_type + \"\\nhost:\" + host + \"\\n\";",
+					"        var signed_headers = \"content-type;host\";",
+					"        var hashed_request_payload = sha256_hex(request_json_payload);",
+					"        ",
+					"        var canonical_request = http_request_method   + \"\\n\" +",
+					"                                canonical_uri         + \"\\n\" +",
+					"                                canonical_querystring + \"\\n\" +",
+					"                                canonical_headers     + \"\\n\" +",
+					"                                signed_headers        + \"\\n\" +",
+					"                                hashed_request_payload;",
+					"        //console.log('canonical_request');",
+					"        //console.log(canonical_request);",
+					"        ",
+					"        // step 2：create signing_string",
+					"        var credential_scope = date + \"/\" + service + \"/\" + \"tc3_request\";",
+					"        var hashed_canonical_request = sha256_hex(canonical_request);",
+					"        ",
+					"        var string_to_sign = algorithm            + \"\\n\" +",
+					"                             timestamp.toString() + \"\\n\" +",
+					"                             credential_scope     + \"\\n\" +",
+					"                             hashed_canonical_request;",
+					"        //console.log('string_to_sign');",
+					"        //console.log(string_to_sign);",
+					"        ",
+					"        // step 3：calculate signature",
+					"        var secret_id = get_pm_env_or_global(\"secret_id\");",
+					"        var secret_key = get_pm_env_or_global(\"secret_key\");",
+					"        var secret_date_key = CryptoJS.enc.Utf8.parse(\"TC3\" + secret_key);",
+					"        var secret_date = sign_hmac256(secret_date_key, date);",
+					"        var secret_service = sign_hmac256(secret_date, service);",
+					"        var secret_signing = sign_hmac256(secret_service, \"tc3_request\");",
+					"        var signature = sign_hmac256_hex(secret_signing, string_to_sign);",
+					"        //console.log(\"signature\");",
+					"        //console.log(signature);",
+					"        ",
+					"        // step 4：create authorization",
+					"        var authorization = algorithm + \" \" +",
+					"                            \"Credential=\" + secret_id + \"/\" + credential_scope + \", \" +",
+					"                            \"SignedHeaders=\" + signed_headers + \", \" +",
+					"                            \"Signature=\" + signature;",
+					"        //console.log(\"authorization\");",
+					"        //console.log(authorization);",
+					"        ",
+					"        // step 5: add HTTP headers",
+					"        // pm.request.headers.add(\"X-TC-Region:\"+region);",
+					"        pm.request.headers.add(\"X-TC-Timestamp:\"+timestamp);",
+					"        pm.request.headers.add(\"X-TC-Version:\"+version);",
+					"        pm.request.headers.add(\"Authorization:\"+authorization);",
+					"        pm.request.headers.add(\"Host:\"+host);",
+					"        ",
+					"        // step 6: set environment variables using in request",
+					"        pm.environment.set(\"host\", host);",
+					"        pm.environment.set(\"request_json_payload\", request_json_payload);",
+					"    };",
+					"    ",
+					"    return tencentcloudapi;",
+					"} + 'TencentCloudApi();'",
+					");"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "a729cad2-81e5-4b69-a51c-bcd16df026ed",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

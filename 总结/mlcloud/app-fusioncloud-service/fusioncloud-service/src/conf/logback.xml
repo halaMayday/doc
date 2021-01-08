@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+  <property name="APP_Name" value="shenzhouSoft-service serviceMgr"/>
+  <timestamp key="bySecond" datePattern="yyyyMMdd'T'HHmmss"/>
+  <!--<contextName>${APP_Name}</contextName>-->
+  <!--<contextName>${bySecond}</contextName>-->
+
+  <!-- ###########################stdout logger######################################### -->
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <!-- encoder 默认配置为PatternLayoutEncoder -->
+    <encoder>
+      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} %L - %msg%n</pattern>
+    </encoder>
+  </appender>
+  <appender name="async-stdout" class="ch.qos.logback.classic.AsyncAppender">
+    <appender-ref ref="STDOUT"/>
+    <includeCallerData>true</includeCallerData>
+  </appender>
+
+  <!-- ###########################rollingFile logger######################################### -->
+  <appender name="rollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>/var/log/vmmgr/app-fusioncloud-service/serviceMgr.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>/var/log/vmmgr/serviceMgr.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+      <maxHistory>30</maxHistory>
+    </rollingPolicy>
+    <encoder>
+      <pattern>
+        %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} -> %method{36} %L - %msg%n
+      </pattern>
+    </encoder>
+  </appender>
+  <appender name="async-rollingFile" class="ch.qos.logback.classic.AsyncAppender">
+    <appender-ref ref="rollingFile"/>
+    <includeCallerData>true</includeCallerData>
+  </appender>
+
+  <!-- 主程序 -->
+  <!-- additivity属性为false，表示此loger的打印信息不再向上级传递，-->
+  <logger name="com.mlcoud" level="INFO" additivity="false">
+    <!--<appender-ref ref="async-stdout"/>-->
+    <appender-ref ref="async-rollingFile"/>
+  </logger>
+
+  <logger name="org.apache" level="ERROR" />
+
+  <logger name="httpclient" level="ERROR" />
+
+  <!--  trace < debug < info < warn < error -->
+  <root level="INFO">
+    <appender-ref ref="async-rollingFile"/>
+  </root>
+
+</configuration>

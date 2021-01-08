@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/access-fusioncloud/access-fusioncloud.iml" filepath="$PROJECT_DIR$/access-fusioncloud/access-fusioncloud.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app-fusioncloud-service.iml" filepath="$PROJECT_DIR$/app-fusioncloud-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/fusioncloud-service/fusioncloud-service.iml" filepath="$PROJECT_DIR$/fusioncloud-service/fusioncloud-service.iml" />
+    </modules>
+  </component>
+</project>

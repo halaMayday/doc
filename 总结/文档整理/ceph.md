@@ -1,0 +1,47 @@
+#创建名称为mlcloud的ceph客户端账号
+ceph auth get-or-create client.fusioncloud;
+
+ceph auth get-or-create client.fusioncloud;
+
+#赋权mlcloud账号
+ceph auth caps client.fusioncloud mon 'allow r' osd 'allow class-read object_prefix rbd_children, allow rwx pool=hftest,allow rwx pool=volumes, allow rwx pool=SSD_POOL, allow rwx pool=images';
+
+#导出keyring
+ceph auth get client.fusioncloud > /etc/ceph/ceph.client.fusioncloud.keyring;
+
+#将keyring发送到测试虚拟机上(登录口令：!@!U8XfH)
+scp /etc/ceph/ceph.client.fusioncloud.keyring root@192.168.14.113:/etc/ceph/ceph.client.fusioncloud.keyring;
+scp /etc/ceph/ceph.client.fusioncloud.keyring root@192.168.14.114:/etc/ceph/ceph.client.fusioncloud.keyring;
+
+
+#将ceph集群配置发送到测试虚拟机上(登录口令：!@!U8XfH)
+scp /etc/ceph/ceph.conf root@192.168.14.113:/etc/ceph/ceph.conf;
+scp /etc/ceph/ceph.conf root@192.168.14.114:/etc/ceph/ceph.conf;
+
+scp -r /etc/ceph/ root@192.168.18.61:/etc/ceph/
+
+
+#服务端keyring文件可删除
+\rm /etc/ceph/ceph.client.fusioncloud.keyring;
+
+#该命令可删除ceph客户端用户账号
+ceph auth del client.fusioncloud
+
+
+#客户端节点验证
+ceph -s --name client.fusioncloud
+
+cluster 60488339-cfb4-44a8-a523-6eef76c8b141
+ health HEALTH_WARN
+        too many PGs per OSD (416 > max 300)
+ monmap e1: 2 mons at {node1=192.168.8.200:6789/0,node2=192.168.8.201:6789/0}
+        election epoch 302, quorum 0,1 node1,node2
+ osdmap e2748: 2 osds: 2 up, 2 in
+        flags sortbitwise,require_jewel_osds
+  pgmap v4333896: 416 pgs, 6 pools, 142 GB data, 25175 objects
+        289 GB used, 1747 GB / 2037 GB avail
+             416 active+clean
+
+#查看pool状态
+[root@localhost ceph]# ceph osd lspools --name client.fusioncloud
+0 rbd,5 images,6 vms,7 volumes,9 backups,12 testpool,

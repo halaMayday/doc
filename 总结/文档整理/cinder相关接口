@@ -1,0 +1,26 @@
+a) Create Volume         cinder create 1 --display-name admin-volume1     cinder create --display-name VOLNAME SIZE（SIZE的单位为GB）
+b) Delete Volume         cinder delete volume_id or display-name
+c) Attach Volume         nova volume-attach <server> <volume> [<device>]
+d) Detach Volume        nova volume-detach <server> <volume>
+e) Create Snapshot      cinder snapshot-create --display-name volume5-ss admin-volume5     cinder snapshot-create --display-name SNAPSHOT-VOLNAME VOLNAME-OR-ID
+f) Delete Snapshot      cinder snapshot-delete VOLNAME-OR-ID
+g) Create Volume from snapshot    cinder create --snapshot-id bb25fa58-682d-4625-ada0-7f8ddd353179 --display-name vol-from-ss 3
+h) Get volume stats   cinder show<volume>
+i) Clone Volume       cinder create --source-volid eeb23bf0-f53e-4062-8162-e261c4774fe4 --display-name clone-from-volume5 3
+j) Copy image to volume    cinder create --image-id ce0c0809-e540-4cf1-bfe2-820bf46d8b82 --display-name vol-from-img 1
+k) Copy volume to image   cinder upload-to-image vol-from-img img-copy-from-vol
+l) Extend volume    cinder extend<volume> <new_size>
+
+
+
+
+
+nova volume-detach e5dbe7a3-74de-4bbe-9329-244ae5b2a66b beb2f3d4-6e9f-46c8-b0bd-db954e44c2ef
+
+
+
+| beb2f3d4-6e9f-46c8-b0bd-db954e44c2ef | in-use         | test4fusioncloudV3                                   | 1    | -           | false    | e5dbe7a3-74de-4bbe-9329-244ae5b2a66b |
+
+
+
+openstack server remove volume e5dbe7a3-74de-4bbe-9329-244ae5b2a66b beb2f3d4-6e9f-46c8-b0bd-db954e44c2ef

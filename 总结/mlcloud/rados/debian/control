@@ -1,0 +1,12 @@
+Source: librados-java
+Section: libs
+Priority: extra
+Maintainer: Wido den Hollander <wido@42on.com>
+Build-Depends: debhelper (>= 7), openjdk-7-jdk | openjdk-8-jdk, maven (>= 3)
+Standards-Version: 3.8.1
+Homepage: http://www.github.com/ceph/rados-java
+
+Package: librados-java
+Architecture: all
+Depends: librados2 (>= 0.80), librbd1 (>= 0.80)
+Description: Java JNA bindings for librados and librbd
