@@ -246,3 +246,11 @@ virsh dumpxml  77fae30c-dac9-4981-be9e-bb1c48326995
 02
 # 删除bitmap
 virsh qemu-monitor-command 77fae30c-dac9-4981-be9e-bb1c48326995 '{ "execute" : "block-dirty-bitmap-remove", "arguments" : { "node" : "drive-virtio-disk0", "name" : "bitmap0" } }'
+
+
+
+./serviceMgr -b -c ../conf/test.conf -m 77fae30c-dac9-4981-be9e-bb1c48326995 -g 1 -logId 0 -H 192.168.8.61
+
+
+/opt/mulang/vmmgr/vendor/fusioncloudSoft
+/opt/mulang/vmmgr/vender/fusioncloudSoft

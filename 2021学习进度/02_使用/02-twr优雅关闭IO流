@@ -1,0 +1,7 @@
+https://blog.csdn.net/weixin_46288569/article/details/106582123
+
+public String tryresources(String path) throws IOException {
+    try(BufferedReader reader = new BufferedReader(new FileReader(new File(path)))){
+        return reader.readLine();
+    }
+}

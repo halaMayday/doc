@@ -48,3 +48,33 @@ kvm备份编写工作
 
 * get domain disk info, only can be used when vm is running
     * virsh qemu-monitor-command domain --pretty '{ "execute": "query-block" }'
+
+
+
+
+
+
+
+
+本周工作：
+虚拟化框架：
+在虚拟化框架中新增对KVM备份的支持。
+1：kvm备份的编写
+2：kvm恢复的编写
+目前进度：完成了百分之80。业务流程大体走通了，程序主体完成编写。
+剩下工作：
+1：代码结构的调整。周五迁移代码到虚拟化框架中的时候，发现之前漏掉了部分的工作。access-remote的server和client的编写。
+原因是，我之前写的代码逻辑主要放在 access-local中。这是不符合现在虚拟化框架的整体结构的，需要调整。
+2：取消备份任务这个接口的编写还没完成
+3：优化，调整下原项目dirtybitmap备份进度这个接口
+这周进度较慢的原因：
+01：kvm，Dirty Bitmap的调研，耽误了点时间。
+02：原项目dirty Bitmap的备份逻辑与之前写过的fusioncloud项目有所出入，走了些弯路。
+03：配置新的储存类型，进行测试的的时候，配置有问题。也耽搁了时间，最后还是麻烦健辉帮忙解决的。
+
+
+下周工作计划
+01：完成 新增虚拟化框架对KVM备份的支持
+02：提测，修改测试中出现的bug。
+03：涵博已完成了虚拟化框架1.1版本。将改动迁移到重构的fusioncloud项目中。
+04：对接的新平台如果机器下来了，进行前期的相关调研，准备工作。
