@@ -52,21 +52,43 @@ Ansible是一个开源部署工具
 # reboot 
 1.安装python3.6 版本
 	参照这个：https://www.cnblogs.com/kimyeee/p/7250560.html
+	
+	yum install -y gcc
+	
+	wget http://www.python.org/ftp/python/3.6.5/Python-3.6.5.tar.xz
+	tar xf Python-3.6.5.tar.xz
+  cd Python-3.6.5
+  ./configure --prefix=/usr/local --with-ensurepip=install --enable-shared LDFLAGS="-wl,-rpath /usr/loacl/lib"
+  ln -s /usr/local/bin/pip3.6 /usr/local/bin/pip
 2.安装virtualenv
-	# pip install virtualenv 
+	# pip3 install virtualenv 
+	pip install virtualenv 
 3.创建Ansible账户并安装python3.6版本的virtualenv实例
 	# useradd deploy && su - deploy
-	# virtualenv -p /usr/loacl/bin/python3.py3-a2.5-env
+	# virtualenv -p /usr/local/bin/python3.6 .py3-a2.5-env
 4.git 源代码安装ansible2.5
 	# cd /home/deploy/.py3-a2.5-env
-	# git clone https://github.com/ansible/ansible.git 
+	# git clone https://github.com/ansible/ansible.git
 	# cd ansible && git checkout stable-2.5
 5.加载python3.6 virtualenv环境
 	# source /home/deploy/.py3-a2.5-env/bin/activate
 6.安装ansible依赖包
- # pip install paramiko PyYAML jinja2
+ # sudo pip3 install paramiko PyYAML jinja2
+ sudo pip3 install    --target=/usr/local/python-3.6/lib/python3.6/site-packages paramiko PyYAML jinja2  --upgrade
+ 
+  sudo pip3 install    --target=/usr/local/python-3.6/lib/python3.6/site-packages paramiko  paramiko PyYAML jinja2 
+  
+   sudo mv ansible-stable-2.5 .py3-a2.5-env/
+   
+   pip  install paramiko PyYAML jinja2
+ 
+ 	 mv ansible .py3-a2.5-env/
+ 	 
+ 	 
 7.在pyhon3.6的环境下加载ansible
-# source /home/deploy/.py3-a2.5-env/ansible/hacking/emv-setup -q 
+ cd .py3-a2.5-env/ansible-stable-2.5
+# source /home/deploy/.py3-a2.5-env/ansible/hacking/env-setup -q
+ 
 8 验证ansible2.5
 # ansible --version
 
@@ -75,6 +97,19 @@ Ansible是一个开源部署工具
 	# ssh-keygen -t rsa
   # ssh-copy-id -i /home/deploy/.ssh/id_rsa.pub root@192.168.8.61
   
+10. 验证ansible playbook的版本
+	# source .py3-a2.5-env/bin/activate
+	# ansible-playbook --version
+ 
+ 11 
+ ssh root@192.168.14.144
+ useradd foo
+ useradd deploy 
+ rpm -Uvh http://nginx.org/packages/centos7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm 
+ 
+ 12 ansible 的执行
+ ansible-playbook -i inventory/testenv ./deploy.yml
+ 
 ```
 
 #### 4.Ansible playbooks入门和编写规范
