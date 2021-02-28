@@ -51,64 +51,63 @@ Ansible是一个开源部署工具
 设置 SELINUX = disabled
 # reboot 
 1.安装python3.6 版本
-	参照这个：https://www.cnblogs.com/kimyeee/p/7250560.html
-	
-	yum install -y gcc
-	
 	wget http://www.python.org/ftp/python/3.6.5/Python-3.6.5.tar.xz
 	tar xf Python-3.6.5.tar.xz
   cd Python-3.6.5
   ./configure --prefix=/usr/local --with-ensurepip=install --enable-shared LDFLAGS="-wl,-rpath /usr/loacl/lib"
   ln -s /usr/local/bin/pip3.6 /usr/local/bin/pip
-2.安装virtualenv
-	# pip3 install virtualenv 
-	pip install virtualenv 
+  
+2.安装virtualenv 
+	#  pip install virtualenv 
+	
 3.创建Ansible账户并安装python3.6版本的virtualenv实例
-	# useradd deploy && su - deploy
 	# virtualenv -p /usr/local/bin/python3.6 .py3-a2.5-env
+	
 4.git 源代码安装ansible2.5
-	# cd /home/deploy/.py3-a2.5-env
+	# cd /home/deploy/
 	# git clone https://github.com/ansible/ansible.git
 	# cd ansible && git checkout stable-2.5
+	
 5.加载python3.6 virtualenv环境
 	# source /home/deploy/.py3-a2.5-env/bin/activate
+
 6.安装ansible依赖包
- # sudo pip3 install paramiko PyYAML jinja2
- sudo pip3 install    --target=/usr/local/python-3.6/lib/python3.6/site-packages paramiko PyYAML jinja2  --upgrade
- 
-  sudo pip3 install    --target=/usr/local/python-3.6/lib/python3.6/site-packages paramiko  paramiko PyYAML jinja2 
-  
-   sudo mv ansible-stable-2.5 .py3-a2.5-env/
-   
-   pip  install paramiko PyYAML jinja2
- 
- 	 mv ansible .py3-a2.5-env/
+ # pip install paramiko PyYAML jinja2
+
+7. 	移动ansible 文件夹到 .py3-a2.5-env目录下
+	# mv ansible .py3-a2.5-env/
  	 
- 	 
-7.在pyhon3.6的环境下加载ansible
- cd .py3-a2.5-env/ansible-stable-2.5
-# source /home/deploy/.py3-a2.5-env/ansible/hacking/env-setup -q
+8.在pyhon3.6的环境下加载ansible
+ # cd .py3-a2.5-env/ansible
+ # source /home/deploy/.py3-a2.5-env/ansible/hacking/env-setup -q
  
-8 验证ansible2.5
+9 验证ansible2.5
 # ansible --version
 
-9.配置ansible主机和目标部署主机SSH免密钥登录
+10.配置ansible主机和目标部署主机SSH免密钥登录
 	Ansible服务器端创建SSH本地密钥
 	# ssh-keygen -t rsa
-  # ssh-copy-id -i /home/deploy/.ssh/id_rsa.pub root@192.168.8.61
+  # ssh-copy-id -i /root/.ssh/id_rsa.pub root@192.168.8.61
   
-10. 验证ansible playbook的版本
+11. 验证ansible playbook的版本
 	# source .py3-a2.5-env/bin/activate
+	# source .py3-a2.5-env/ansible/hacking/env-setup -q
+	
 	# ansible-playbook --version
- 
- 11 
- ssh root@192.168.14.144
- useradd foo
- useradd deploy 
- rpm -Uvh http://nginx.org/packages/centos7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm 
- 
- 12 ansible 的执行
- ansible-playbook -i inventory/testenv ./deploy.yml
+  
+12 ansible 的执行
+ (.py3-a2.5-env) [root@localhost ansible-palybooks]# ansible-playbook -i inventory/testenv ./deploy.yml 
+
+PLAY [testservers] ***********************************************************************************************************************************************************************************************************************************
+
+TASK [Gathering Facts] *******************************************************************************************************************************************************************************************************************************
+ok: [hufan-node2]
+
+TASK [testbox : Print server name and user to remote testbox] ****************************************************************************************************************************************************************************************
+changed: [hufan-node2]
+
+PLAY RECAP *******************************************************************************************************************************************************************************************************************************************
+hufan-node2                : ok=2    changed=1    unreachable=0    failed=0 
  
 ```
 
