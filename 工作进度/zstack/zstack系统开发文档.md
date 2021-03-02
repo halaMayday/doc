@@ -231,19 +231,100 @@ zstack系统开发文档
 
 - **备份虚拟机**
 
-  注：本地文档编写内容基于ceph作为zstack主储存。ceph版本为公有版本。后续zstack会提供他们专门支持ceph版本到我们。使用的都是基于ceph的rbd客户端，预计不会有很大的差异。
+  注：本地文档编写内容基于ceph作为zstack主储存。ceph版本为开源版本。后续zstack会提供他们专门支持ceph商业版本到我们。使用都是基于ceph的rbd的客户端，预计不会有太大的差异。
 
   **备份流程：**
 
   ![image-20210302175544686](C:\Users\EDZ\AppData\Roaming\Typora\typora-user-images\image-20210302175544686.png)
 
-  
+  ![ZSTACK备份流程](/Users/nuc/Downloads/ZSTACK备份流程.jpg)
+
+
+根据现有的zstack提供的开发文档，在灾备服务中**仅有数据库备份数据的导出接口，没有提供卷备份数据导出的接口**。所以目前来看zstack平台本身不支持数据导出（不排除他们商业版本的ceph会提供有关的接口。）
+
+以下关于导出备份数据的实现都需要借助第三方工具，在宿主机上安装agent调用ceph客户端。
+
+**导出差异位图**：
+
+```
+基本语法如下：
+rbd diff --from-snap {fromSnap} snapshotSpecification
+实例说明如下：
+创建第一次快照：
+rbd snap create volumes/volume-c18b9782-dc71-4ddc-bb7f-bc0037105ac3@v1
+第一次全量备份，下面命令是导出了从开始创建image到快照v1那个时间点的差异数据导出来了fullBackupData_v1，导出成本地文件testimage_v1
+rbd export-diff volumes/volume-c18b9782-dc71-4ddc-bb7f-bc0037105ac3@v1 fullBackupData_v1
+第二次快照：
+rbd snap create volumes/volume-c18b9782-dc71-4ddc-bb7f-bc0037105ac3@v2
+第二次增量备份：(命令是导出了从v1快照时间点到v2快照时间点的差异数据)
+rbd export-diff volumes/volume-c18b9782-dc71-4ddc-bb7f-bc0037105ac3@v2 --from-snap v1 incrBackupData_v2
+```
+
+虚拟化框架中RadosAccess.RadosAccess()已提供相关实现。
+
+**根据差量位图导入数据**：
+
+​	上面导出差量位图得到的结果是包含偏移量和长度的集合（Set<Pair<Long, Integer>> bitmap）。
+
+通过java提供的RandomAccessFile可以实现将数据写入到指定文件中。
+
+​	虚拟化框架中OsAccess.write(long pos, byte[] bytes, int len, String filePath)方法已实现随机读写。
+
+```
+/**
+     * random access write
+     */
+    public void write(long pos, byte[] bytes, int len, String filePath)
+        throws LocalWriteException {
+        try (RandomAccessFile access = new RandomAccessFile(filePath, "rw")) {
+            access.seek(pos);
+            access.write(bytes, 0, len);
+        } catch (IOException e) {
+            throw new LocalWriteException(e.getMessage(), filePath);
+        }
+    }
+```
+
+**数据持久化**：
+
+​	将备份所得数据从临时目录移动到持久化目录。
 
 - **恢复迁移虚拟机**
 
+  恢复的流程如下：
+
+  ![zstack数据恢复功能 (1)](/Users/nuc/Downloads/zstack数据恢复功能 (1).jpg)
+
+  **恢复前准备工作**：准备工作包括创建临时目录、加载待恢复实例模型、挂载NFS等。
+
+  考虑到恢复的时候存在主机当前的磁盘跟备份时间点的磁盘数量不匹配的情况。例如备份时有ABC三个磁盘，但是恢复的时候该主机存在ADE三个磁盘。故此采取了先卸载所有虚拟机硬盘，然后创建同等规格的磁盘，再挂载，最后倒入待恢复数据的方案。
+
+  **导入数据**：
+
+  ​	往磁盘中写入数据的实现采用rados中RbdImage.write(byte[] data, long offset, int length)即可。
+
+  ​	虚拟化框架中已有实现，如下:
+
+  ```
+  private void rbdTransfer(String fromFile, RbdImage toImage, long position, int length)
+          throws LocalReadException, RbdException {
+          byte[] content = OsAccess.access.read(position, length, fromFile);
+          toImage.write(content, position, length);
+      }
+  ```
+
 - **克隆迁移虚拟机**
+
+  ​	（未完成，待补充）
+
+  - 不支持快速挂载。只有通过，创建新的虚拟机，创建新的空白磁盘，挂载，写入数据这样来实现。随着备份数据量的增大，功能耗时越来越长。
+  - 支持快速挂载。是否可以将ceph备份的数据，当做NFS共享磁盘，直接挂载到新的虚拟机上启动（待测试验证）
 
 - **查询备份虚拟机进度**
 
+  采用统计io的方式，待补充
+
 - **克隆或者恢复迁移进度**
+
+  同上待补充
 
