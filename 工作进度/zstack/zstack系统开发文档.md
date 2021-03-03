@@ -293,7 +293,7 @@ rbd export-diff volumes/volume-c18b9782-dc71-4ddc-bb7f-bc0037105ac3@v2 --from-sn
 
   恢复的流程如下：
 
-  ![zstack数据恢复功能 (1)](/Users/nuc/Downloads/zstack数据恢复功能 (1).jpg)
+  ![zstack数据恢复功能](D:\googleDownload\zstack数据恢复功能.jpg)
 
   **恢复前准备工作**：准备工作包括创建临时目录、加载待恢复实例模型、挂载NFS等。
 
