@@ -23,3 +23,11 @@ itjc8.com)!xkuZ*G98z&fQ&Tf
 7：Java新特性
 
 www.itjc8.com_Uf6vDcaI
+
+8：架构师（网易架构师）
+
+itjc8.com@RzC$MC@kR3JYjQZ
+
+9：设计模式
+
+itjc8.com&VAuXs@PuOnn9VvVU
