@@ -1,5 +1,9 @@
 #### 1.Ansible介绍
 
+个人练手的项目地址：
+
+http://dev1949.lab.dbfen.com/hufan/ansible-palybooks.git
+
 Ansible是一个开源部署工具
 
 开发语言：Python
